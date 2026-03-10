@@ -1,0 +1,22 @@
+# Default deny: ~/.codex contains auth, sessions, caches, logs, and local state.
+*
+
+# Track public repo files.
+!.gitignore
+!AGENTS.md
+!README.md
+!install.sh
+!skills/
+!skills/**
+
+# Never publish local-only or generated artifacts.
+AGENTS.md.bak-*
+**/.DS_Store
+skills/.system/
+skills/.system/**
+skills/**/_docs/
+skills/**/_docs/**
+skills/**/_log_inlineMark/
+skills/**/_log_inlineMark/**
+skills/**/__pycache__/
+skills/**/*.pyc

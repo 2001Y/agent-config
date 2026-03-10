@@ -1,0 +1,4 @@
+interface:
+  display_name: "Trend Researcher"
+  short_description: "X検索とGPT要約で技術・フレームワーク動向を調査する"
+  default_prompt: "Use $trend-researcher to investigate current engineering trends on X with xurl and synthesize them with GPT."

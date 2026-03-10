@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+timestamp_utc() {
+  date -u +"%Y-%m-%dT%H:%M:%SZ"
+}
+
+die() {
+  echo "Error: $*" >&2
+  exit 1
+}
+
+[[ -n "${TREND_RESEARCH_DIR:-}" ]] || die "TREND_RESEARCH_DIR is not set; source activate-session.sh first"
+[[ -n "${TREND_RESEARCH_REAL_XURL:-}" ]] || die "TREND_RESEARCH_REAL_XURL is not set; source activate-session.sh first"
+[[ -x "${TREND_RESEARCH_REAL_XURL}" ]] || die "real xurl binary is not executable: ${TREND_RESEARCH_REAL_XURL}"
+
+mkdir -p "$TREND_RESEARCH_DIR"
+QUERY_LOG_PATH="${TREND_RESEARCH_DIR}/queries.jsonl"
+RESULT_LOG_PATH="${TREND_RESEARCH_DIR}/x-search.jsonl"
+RESULT_JSON_PATH="${TREND_RESEARCH_DIR}/x-search.json"
+STARTED_AT="$(timestamp_utc)"
+STARTED_EPOCH="$(date +%s)"
+STDOUT_PATH="$(mktemp)"
+STDERR_PATH="$(mktemp)"
+
+cleanup() {
+  rm -f "$STDOUT_PATH" "$STDERR_PATH"
+}
+trap cleanup EXIT
+
+set +e
+"${TREND_RESEARCH_REAL_XURL}" "$@" >"$STDOUT_PATH" 2>"$STDERR_PATH"
+EXIT_CODE="$?"
+set -e
+
+cat "$STDOUT_PATH"
+if [[ -s "$STDERR_PATH" ]]; then
+  cat "$STDERR_PATH" >&2
+fi
+
+ENDED_AT="$(timestamp_utc)"
+DURATION_SECONDS="$(( $(date +%s) - STARTED_EPOCH ))"
+
+python3 - "$QUERY_LOG_PATH" "$RESULT_LOG_PATH" "$RESULT_JSON_PATH" "$STARTED_AT" "$ENDED_AT" "$DURATION_SECONDS" "$EXIT_CODE" "$PWD" "$STDOUT_PATH" "$STDERR_PATH" "$@" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+query_log_path = Path(sys.argv[1])
+result_log_path = Path(sys.argv[2])
+result_json_path = Path(sys.argv[3])
+started_at = sys.argv[4]
+ended_at = sys.argv[5]
+duration_seconds = int(sys.argv[6])
+exit_code = int(sys.argv[7])
+cwd = sys.argv[8]
+stdout_path = Path(sys.argv[9])
+stderr_path = Path(sys.argv[10])
+argv = sys.argv[11:]
+
+stdout_text = stdout_path.read_text()
+stderr_text = stderr_path.read_text()
+
+query_record = {
+    "started_at": started_at,
+    "ended_at": ended_at,
+    "duration_seconds": duration_seconds,
+    "exit_code": exit_code,
+    "cwd": cwd,
+    "argv": argv,
+    "stderr": stderr_text,
+}
+
+with query_log_path.open("a", encoding="utf-8") as handle:
+    handle.write(json.dumps(query_record, ensure_ascii=False) + "\n")
+
+result_record = {
+    "started_at": started_at,
+    "ended_at": ended_at,
+    "duration_seconds": duration_seconds,
+    "exit_code": exit_code,
+    "cwd": cwd,
+    "argv": argv,
+}
+
+stripped = stdout_text.strip()
+if stripped:
+    try:
+        result_record["response"] = json.loads(stripped)
+    except json.JSONDecodeError:
+        result_record["response_text"] = stdout_text
+else:
+    result_record["response_text"] = ""
+
+with result_log_path.open("a", encoding="utf-8") as handle:
+    handle.write(json.dumps(result_record, ensure_ascii=False) + "\n")
+
+records = []
+if result_log_path.exists():
+    for line in result_log_path.read_text().splitlines():
+        if line.strip():
+            records.append(json.loads(line))
+result_json_path.write_text(json.dumps(records, ensure_ascii=False, indent=2))
+PY
+
+exit "$EXIT_CODE"

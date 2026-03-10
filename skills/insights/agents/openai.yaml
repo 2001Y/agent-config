@@ -1,0 +1,4 @@
+interface:
+  display_name: "Insights Rules Advisor"
+  short_description: "Recommend concrete AGENTS.md and SKILL.md updates."
+  default_prompt: "Use $insights in quick mode to propose concrete AGENTS.md and SKILL.md edits."
