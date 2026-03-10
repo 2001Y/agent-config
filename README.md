@@ -45,10 +45,12 @@ npx skills add 2001Y/agent-config --skill coding-confidant -a codex
 
 ## `AGENTS.md`
 
-`AGENTS.md` は `skills add` の管理対象ではないので、必要なら別途同期します。
+`AGENTS.md` は `skills add` の管理対象ではないので、更新しやすいように repo を clone して使うのを推奨します。
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/2001Y/agent-config/main/AGENTS.md -o ~/.codex/AGENTS.md
+git clone https://github.com/2001Y/agent-config.git ~/.config/agent-config
+ln -sf ~/.config/agent-config/AGENTS.md ~/.codex/AGENTS.md
+cd ~/.config/agent-config && git pull
 ```
 
 ## 公開方針
