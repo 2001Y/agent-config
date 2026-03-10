@@ -39,14 +39,6 @@ npx skills add 2001Y/agent-config -a codex -g --skill '*'
 
 `skills/skills.txt` には、この repo で参照している skill 名を並べています。自作 skill だけでなく upstream の汎用 skill 名も含め、install コマンドを書くときの早見表として使えます。
 
-```text
-agent-browser
-coding-confidant
-find-skills
-insights
-trend-researcher
-```
-
 ### upstream の汎用 skill は直接入れる
 
 ```bash
