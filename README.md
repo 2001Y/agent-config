@@ -63,6 +63,16 @@ export GEMINI_API_KEY="..."
 
 `config.toml` の optional MCP examples は、この環境変数を Codex に引き継ぐ前提です。
 
+## 通知
+
+`config.toml` の `notify` は、公開している `slacklocalvibe` コマンドを使って Codex の通知を Slack に流す前提です。
+
+```toml
+notify = ["slacklocalvibe", "notify", "--tool", "codex"]
+```
+
+`slacklocalvibe` を使わない場合は、この行を自分の通知コマンドに置き換えて運用できます。
+
 ## 公開方針
 
 - source of truth はこの repo
