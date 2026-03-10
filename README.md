@@ -1,4 +1,4 @@
-# agent-config
+# 2001Y's agent-config
 
 公開用の Codex / Agents 設定 repo です。
 
