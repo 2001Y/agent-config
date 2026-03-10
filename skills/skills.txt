@@ -1,5 +1,17 @@
 agent-browser
+code-connect-components
 coding-confidant
+docx
 find-skills
+frontend-design
+gh-cli
 insights
+mcp-builder
+pdf
+pptx
+prompt-engineering
+remotion-best-practices
 trend-researcher
+vercel-react-best-practices
+web-design-guidelines
+xlsx
