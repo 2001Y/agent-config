@@ -17,29 +17,31 @@
 ### custom skill 一覧を見る
 
 ```bash
-npx skills add 2001Y/agent-config --list
+npx skills add 2001Y/agent-config -a codex -g --list
 ```
 
 ### custom skill を入れる
 
 ```bash
-npx skills add 2001Y/agent-config --skill coding-confidant
-npx skills add 2001Y/agent-config --skill trend-researcher
-npx skills add 2001Y/agent-config --skill insights
+npx skills add 2001Y/agent-config -a codex -g --skill coding-confidant
+npx skills add 2001Y/agent-config -a codex -g --skill trend-researcher
+npx skills add 2001Y/agent-config -a codex -g --skill insights
 ```
 
 ### 全 custom skill を入れる
 
 ```bash
-npx skills add 2001Y/agent-config --skill '*'
+npx skills add 2001Y/agent-config -a codex -g --skill '*'
 ```
 
 ### upstream の汎用 skill は直接入れる
 
 ```bash
-npx skills add vercel-labs/agent-browser
-npx skills add vercel-labs/skills --skill find-skills
+npx skills add vercel-labs/agent-browser -a codex -g
+npx skills add vercel-labs/skills -a codex -g --skill find-skills
 ```
+
+上の install 例はすべて Codex 向けの global install を前提にしています。
 
 ## `AGENTS.md` と `config.toml`
 
