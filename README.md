@@ -9,32 +9,39 @@
 - `AGENTS.md`
 - `skills/coding-confidant`
 - `skills/trend-researcher`
-- `skills/agent-browser`
-- `skills/find-skills`
 - `skills/insights`
+- `skills/agent-browser` - 公式 skill の案内ファイル
+- `skills/find-skills` - 公式 skill の案内ファイル
 
 ## インストール
 
-### skill 一覧を見る
+### custom skill 一覧を見る
 
 ```bash
 npx skills add 2001Y/agent-config --list
 ```
 
-### 個別に入れる
+### custom skill を入れる
 
 ```bash
 npx skills add 2001Y/agent-config --skill coding-confidant
 npx skills add 2001Y/agent-config --skill trend-researcher
-npx skills add 2001Y/agent-config --skill agent-browser
-npx skills add 2001Y/agent-config --skill find-skills
 npx skills add 2001Y/agent-config --skill insights
 ```
 
-### 全部入れる
+### 全 custom skill を入れる
 
 ```bash
 npx skills add 2001Y/agent-config --skill '*'
+```
+
+### 公式 skill は upstream から入れる
+
+`skills/agent-browser` と `skills/find-skills` は実体 skill ではなく、install 方法だけを書いた案内ファイルです。
+
+```bash
+npx skills add vercel-labs/agent-browser
+npx skills add vercel-labs/skills --skill find-skills
 ```
 
 ### Codex 向けに明示する
@@ -57,5 +64,6 @@ cd ~/.config/agent-config && git pull
 
 - source of truth はこの repo
 - Codex 標準 skill は含めない
+- 公開済みの汎用 skill は自 repo に再配布せず、`skills/` 配下の案内ファイルで upstream install を示す
 - 保存責務は agent ではなく skill / script 側へ寄せる
 - X の最新動向が判断に効くテーマでは `coding-confidant` と `trend-researcher` を並行利用する
