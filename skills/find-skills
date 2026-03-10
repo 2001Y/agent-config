@@ -1,4 +1,0 @@
-Upstream: vercel-labs/skills
-
-Install:
-npx skills add vercel-labs/skills --skill find-skills

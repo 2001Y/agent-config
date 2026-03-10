@@ -1,0 +1,58 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+model = "gpt-5.4"
+model_reasoning_effort = "medium"
+notify = ["slacklocalvibe", "notify", "--tool", "codex"]
+personality = "pragmatic"
+model_context_window = 1000000
+model_auto_compact_token_limit = 950000
+
+[features]
+apps = true
+multi_agent = true
+search_tool = true
+
+[mcp_servers.serena]
+command = "uvx"
+args = [
+  "--from",
+  "git+https://github.com/oraios/serena",
+  "serena",
+  "start-mcp-server",
+  "--context",
+  "codex",
+  "--enable-web-dashboard",
+  "false",
+]
+
+[mcp_servers.context7]
+command = "bunx"
+args = ["@upstash/context7-mcp"]
+
+[mcp_servers.deepwiki]
+url = "https://mcp.deepwiki.com/mcp"
+
+# Optional MCP examples.
+# Keep secrets in ~/.zshrc and let Codex inherit them from the shell.
+# Example:
+#   export OPENAI_API_KEY="..."
+#   export GEMINI_API_KEY="..."
+
+#[mcp_servers.o3]
+#command = "bunx"
+#args = ["o3-search-mcp@latest"]
+#startup_timeout_sec = 300
+#tool_timeout_sec = 1_800
+#env_vars = [
+#  "OPENAI_API_KEY",
+#  "OPENAI_API_TIMEOUT",
+#  "OPENAI_MAX_RETRIES",
+#  "OPENAI_MODEL",
+#  "REASONING_EFFORT",
+#  "SEARCH_CONTEXT_SIZE",
+#]
+
+#[mcp_servers.gemini-cli]
+#command = "bunx"
+#args = ["gemini-mcp-tool@latest"]
+#env_vars = ["GEMINI_API_KEY"]

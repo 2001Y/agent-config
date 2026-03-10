@@ -1,4 +1,0 @@
-Upstream: vercel-labs/agent-browser
-
-Install:
-npx skills add vercel-labs/agent-browser

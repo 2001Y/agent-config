@@ -1,12 +1,18 @@
 # Default deny: ~/.codex contains auth, sessions, caches, logs, and local state.
 *
 
-# Track public repo files.
+# Track public repo files only.
 !.gitignore
 !AGENTS.md
 !README.md
+!config.toml
 !skills/
-!skills/**
+!skills/coding-confidant/
+!skills/coding-confidant/**
+!skills/trend-researcher/
+!skills/trend-researcher/**
+!skills/insights/
+!skills/insights/**
 
 # Never publish local-only or generated artifacts.
 AGENTS.md.bak-*
