@@ -5,15 +5,12 @@
 !.gitignore
 !AGENTS.md
 !README.md
-!install.sh
 !skills/
 !skills/**
 
 # Never publish local-only or generated artifacts.
 AGENTS.md.bak-*
 **/.DS_Store
-skills/.system/
-skills/.system/**
 skills/**/_docs/
 skills/**/_docs/**
 skills/**/_log_inlineMark/

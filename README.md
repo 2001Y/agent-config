@@ -2,74 +2,58 @@
 
 公開用の Codex / Agents 設定 repo です。
 
-この repo は `~/.codex` をそのまま公開せず、共有してよいものだけを切り出す前提で構成しています。ローカル状態、認証、セッション、履歴、キャッシュ、承認済み権限のような machine-specific な情報は含めません。
+この repo は `~/.codex` をそのまま公開せず、共有してよい `AGENTS.md` と custom skills だけを切り出す前提で構成しています。認証、履歴、セッション、キャッシュ、ログ、承認済み権限のような machine-specific な情報は含めません。
 
 ## 含めるもの
 
 - `AGENTS.md`
-- `skills/`
-  - `coding-confidant`
-  - `trend-researcher`
-  - `agent-browser`
-  - `find-skills`
-  - `insights`
-  - `screenshot`
-- `install.sh`
+- `skills/coding-confidant`
+- `skills/trend-researcher`
+- `skills/agent-browser`
+- `skills/find-skills`
+- `skills/insights`
 
-## 含めないもの
+## インストール
 
-- 認証情報: `auth.json` など
-- セッション / 履歴: `sessions/`, `history.jsonl`, `session_index.jsonl`
-- ローカル DB / キャッシュ / ログ: `state_*.sqlite`, `cache/`, `log/`, `shell_snapshots/`
-- machine-specific な承認ルール: `rules/default.rules`
-- 一時生成物: `_docs/_skills/*`, `_log_inlineMark`, `__pycache__`, `.DS_Store`
-
-## 使い方
-
-### 1. repo を clone
+### skill 一覧を見る
 
 ```bash
-git clone <YOUR_GITHUB_REPO>
-cd agent-config
+npx skills add 2001Y/agent-config --list
 ```
 
-### 2. ローカルへ反映
+### 個別に入れる
 
 ```bash
-./install.sh
+npx skills add 2001Y/agent-config --skill coding-confidant
+npx skills add 2001Y/agent-config --skill trend-researcher
+npx skills add 2001Y/agent-config --skill agent-browser
+npx skills add 2001Y/agent-config --skill find-skills
+npx skills add 2001Y/agent-config --skill insights
 ```
 
-既定では `AGENTS.md` と `skills/` を `CODEX_HOME` もしくは `~/.codex` に同期します。
-既存ファイルは上書き前に `*.bak.<timestamp>` として退避します。
-
-### 3. 個別に skill を入れる
-
-GitHub 公開後は、skill ごとに公式導線で追加できます。
+### 全部入れる
 
 ```bash
-npx skills add <YOUR_GITHUB_REPO> --skill trend-researcher
-npx skills add <YOUR_GITHUB_REPO> --skill coding-confidant
+npx skills add 2001Y/agent-config --skill '*'
 ```
 
-## install.sh のオプション
+### Codex 向けに明示する
 
 ```bash
-./install.sh                 # AGENTS.md + skills を同期
-./install.sh --agents-only   # AGENTS.md のみ同期
-./install.sh --skills-only   # skills のみ同期
-./install.sh --dry-run       # 実際には書き込まず確認
+npx skills add 2001Y/agent-config --skill coding-confidant -a codex
 ```
 
-## 更新フロー
+## `AGENTS.md`
+
+`AGENTS.md` は `skills add` の管理対象ではないので、必要なら別途同期します。
 
 ```bash
-git pull
-./install.sh
+curl -fsSL https://raw.githubusercontent.com/2001Y/agent-config/main/AGENTS.md -o ~/.codex/AGENTS.md
 ```
 
 ## 公開方針
 
 - source of truth はこの repo
-- ローカルでしか意味がない情報は repo に入れない
-- 保存物は skill / script 側で吸収し、agent に保存責務を押し付けない
-- X 調査が効くテーマでは `coding-confidant` と `trend-researcher` を並行利用する
+- Codex 標準 skill は含めない
+- 保存責務は agent ではなく skill / script 側へ寄せる
+- X の最新動向が判断に効くテーマでは `coding-confidant` と `trend-researcher` を並行利用する
