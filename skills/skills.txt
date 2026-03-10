@@ -1,0 +1,5 @@
+agent-browser
+coding-confidant
+find-skills
+insights
+trend-researcher
